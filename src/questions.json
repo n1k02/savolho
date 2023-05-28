@@ -1,0 +1,36 @@
+{
+  "questions": [
+    {
+      "id": "001",
+      "img": "/src/questions/001/img.png",
+      "title": "Family question",
+      "author": {
+        "name": "Dominic Toretto",
+        "img": "/src/questions/001/author.png"
+      },
+      "date": "28.05.2023",
+      "category": [
+        "cars",
+        "racing"
+      ],
+      "text": "Главное это семья",
+      "answers": 7
+    },
+    {
+      "id": "002",
+      "img": "/src/questions/002/img.png",
+      "title": "smth about family",
+      "author": {
+        "name": "Brain O'Conner",
+        "img": "/src/questions/002/author.png"
+      },
+      "date": "28.05.2023",
+      "category": [
+        "cars",
+        "racing"
+      ],
+      "text": "Ты уже заебал со своей семьей",
+      "answers": 7
+    }
+  ]
+}
