@@ -3,12 +3,30 @@ import {createStore} from "vuex";
 const store = createStore({
     state () {
         return {
-            count: 0
+            searchKeyWord: '',
+            filterCtg: '',
+            activePage: 1,
+            category: [
+                'Игры',
+                'Еда',
+                'Спорт',
+                'Технологии',
+                'Туризм',
+                'Автомобили',
+            ],
+            activeCtg: ''
         }
     },
     mutations: {
-        increment (state) {
-            state.count++
+        setSearchKeyWord (state, payload) {
+            state.searchKeyWord = payload.searchKeyWord
+        },
+        setActivePage(state, payload) {
+            state.activePage = payload.activePage
+        },
+        setFilterCtg(state, payload) {
+            state.filterCtg = payload.filterCtg
         }
     }
 })
+export default store

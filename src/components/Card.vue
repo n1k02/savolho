@@ -121,6 +121,7 @@ export default {
   }
 
   &__author-name {
+    display: flex;
     margin-left: 10px;
     font-weight: 600;
   }
@@ -154,6 +155,7 @@ export default {
     height: 50px;
   }
   &__menu {
+    margin-top: 5px;
     padding-top: 14px;
     border-top: 1px solid #EBE9F1;
     display: flex;

@@ -2,7 +2,7 @@
   <aside class="sidebar">
     <ul>
       <li>
-        <div class="sidebar-item active">
+        <div class="sidebar-item" :class="`${$store.state.activePage === 1 ? 'active' : ''}`"  @click="$store.commit('setActivePage', {activePage: 1})">
           <div class="sidebar-item__img">
             <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -14,7 +14,7 @@
         </div>
       </li>
       <li>
-        <div class="sidebar-item">
+        <div class="sidebar-item" :class="`${$store.state.activePage === 2 ? 'active' : ''}`" @click="$store.commit('setActivePage', {activePage: 2})">
           <div class="sidebar-item__img">
             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path

@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <input type="search" name="search" id="search" placeholder="Поиск по сайту">
+    <input type="search" name="search" id="search" placeholder="Поиск по сайту" @input="$store.commit('setSearchKeyWord', {searchKeyWord: $event.target.value})">
     <div class="search__icon">
       <img src="../assets/find.svg" class="find" alt="find">
     </div>
@@ -8,7 +8,9 @@
 </template>
 
 <script>
-export default {}
+export default {
+
+}
 </script>
 
 <style lang="scss" scoped>
