@@ -1,8 +1,8 @@
 <template>
   <div class="grid">
     <div class="grid__filterCtg" v-if="$store.state.filterCtg">{{$store.state.filterCtg}} <span class="grid__removeCtg" @click="$store.commit('setFilterCtg', {filterCtg: ''})">X</span></div>
-    <div v-for="question in questions" :key="question.id">
-      <Card v-if="question.title.includes(getSearchKeyWord) && (!getFilterCtg || question.category.includes(getFilterCtg))" :img='question.img'
+    <div v-for="question in getFliteredQuestions" >
+      <Card :img='question.img'
             :title="question.title"
             :author="question.author"
             :date="question.date"
@@ -31,6 +31,14 @@ export default {
     getFilterCtg() {
       return this.$store.state.filterCtg
     },
+    getFliteredQuestions() {
+      return questions.filter(question => {
+        if((question.title.toLowerCase().includes(this.getSearchKeyWord) || question.text.toLowerCase().includes(this.getSearchKeyWord)) && (!this.getFilterCtg || question.category.includes(this.getFilterCtg))) {
+          console.log(question)
+          return question
+        }
+      })
+    }
   }
 }
 </script>
