@@ -15,8 +15,28 @@ import Header from "./components/Header.vue";
 import Sidebar from "./components/Sidebar.vue";
 import Questions from "./components/Questions.vue";
 import Category from "./components/Category.vue";
-</script>
 
+
+</script>
+<script>
+import axios from "axios";
+
+export default {
+  methods: {
+    async sendMessage() {
+      try {
+        const response = await axios.get('https://savolho/')
+        console.log(response)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  },
+  mounted() {
+    this.sendMessage()
+  }
+}
+</script>
 <style lang="scss">
 .row {
   width: 100%;
