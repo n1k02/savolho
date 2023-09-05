@@ -20,25 +20,7 @@ import Category from "./components/Category.vue";
 
 
 </script>
-<script>
-import axios from "axios";
 
-export default {
-  methods: {
-    async sendMessage() {
-      try {
-        const response = await axios.get('https://savolho/api')
-        console.log(response)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  },
-  mounted() {
-    this.sendMessage()
-  }
-}
-</script>
 <style lang="scss">
 .row {
   width: 100%;

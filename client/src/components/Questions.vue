@@ -1,14 +1,15 @@
 <template>
   <div class="grid">
     <div class="grid__filterCtg" v-if="$store.state.filterCtg">{{$store.state.filterCtg}} <span class="grid__removeCtg" @click="$store.commit('setFilterCtg', {filterCtg: ''})">X</span></div>
-    <div v-for="question in getFliteredQuestions" >
-      <Card :img='question.img'
+    <div v-for="question in getFilteredQuestions" :key='question.id'>
+      <Card 
+            :id='question.id'
             :title="question.title"
+            :description="question.description"
             :author="question.author"
-            :date="question.date"
-            :category="question.category"
-            :answers="question.answers"
-            :text="question.text.length < 50 ? question.text : question.text.substring(0, 50) + '...' "
+            :date_added="question.date_added"
+            :categories="question.categories"
+            :img_url='question.img_url'
       />
     </div>
   </div>
@@ -16,13 +17,30 @@
 
 <script>
 import Card from "./Card.vue";
-import {questions} from "../questions.json"
+// import {questions} from "../questions.json"
+import axios from 'axios'
+
 export default {
   components: {Card},
   data(){
     return {
-      questions
+      questions: [],
     }
+  },
+  methods: {
+    async getQuestions() {
+      axios.get('https://savolho/api/')
+        .then(response => {
+          this.questions = response.data
+          console.log(this.questions);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+  },
+  mounted() {
+    this.getQuestions()
   },
   computed: {
     getSearchKeyWord() {
@@ -31,8 +49,8 @@ export default {
     getFilterCtg() {
       return this.$store.state.filterCtg
     },
-    getFliteredQuestions() {
-      return questions.filter(question => {
+    getFilteredQuestions() {
+      return this.questions.filter(question => {
         if((question.title.toLowerCase().includes(this.getSearchKeyWord) || question.text.toLowerCase().includes(this.getSearchKeyWord)) && (!this.getFilterCtg || question.category.includes(this.getFilterCtg))) {
           console.log(question)
           return question
