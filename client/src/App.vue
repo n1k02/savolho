@@ -1,11 +1,13 @@
 
 <template>
-  <Header/>
+  <div>
+    <Header/>
   <div class="row">
     <Sidebar/>
     <Questions v-if="$store.state.activePage === 1"/>
     <Category v-if="$store.state.activePage === 2"/>
     <div class="right-side"></div>
+  </div>
   </div>
 </template>
 
