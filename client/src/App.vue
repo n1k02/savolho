@@ -25,7 +25,7 @@ export default {
   methods: {
     async sendMessage() {
       try {
-        const response = await axios.get('https://savolho/')
+        const response = await axios.get('https://savolho/api')
         console.log(response)
       } catch (e) {
         console.log(e)
