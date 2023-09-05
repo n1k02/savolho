@@ -10,7 +10,7 @@
           <img :src="`${author.img}`" alt="">
         </div>
         от
-        <div class="card__author-name">{{ author.name }}</div>
+        <div class="card__author-name">{{ author }}</div>
         <div class="card__date"> &nbsp;&nbsp;&nbsp; | &nbsp;{{ date }}</div>
       </div>
       <div class="card__category">
@@ -18,7 +18,7 @@
           <div class="ctg" :class="`${index % 2  ? 'purple': 'red'}`">{{ c }}</div>
         </div>
       </div>
-      <div class="card__text">{{ text }}</div>
+      <div class="card__text">{{ description }}</div>
       <div class="card__menu">
         <div class="card__likes">
           Like | Оценить
@@ -31,28 +31,24 @@
 
 <script>
 export default {
-  // props: ['img', 'title', 'text', 'author', 'answers', 'date', 'category']
+  // props: ['img', 'title', 'description', 'author', 'answers', 'date', 'category']
   data() {
     return {
       counter: 0
     }
   },
   props: {
-    img: {
+    img_url: {
       type: String,
     },
     title: {
       type: String,
     },
-    text: {
+    description: {
       type: String,
     },
     author: {
-      type: Object,
-      default: {
-        name: '',
-        img: ''
-      }
+      type: String,
     },
     answers: {
       type: Number,
