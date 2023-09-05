@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/savolho.iml" filepath="$PROJECT_DIR$/.idea/savolho.iml" />
+      <module fileurl="file://C:/OSPanel/domains/savolho/server/.idea/server.iml" filepath="C:/OSPanel/domains/savolho/server/.idea/server.iml" />
     </modules>
   </component>
 </project>
