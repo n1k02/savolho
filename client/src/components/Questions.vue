@@ -1,18 +1,18 @@
 <template>
   <div class="grid">
     <div class="grid__filterCtg" v-if="$store.state.filterCtg">{{$store.state.filterCtg}} <span class="grid__removeCtg" @click="$store.commit('setFilterCtg', {filterCtg: ''})">X</span></div>
-    <div v-for="question in questions" :key='question.id'>
-      <Card 
+    <Card v-for="question in questions" :key='question.id'
             :id='question.id'
             :title="question.title"
             :description="question.description"
             :author="question.author"
             :date_added="question.date_added"
             :categories="question.categories"
-            :img_url='question.img_url'
+            :image_url='question.image_url'
             :answers='question.answers'
-      />
-    </div>
+            :likes='question.likes'
+      >
+    </Card>
   </div>
 </template>
 
@@ -30,9 +30,14 @@ export default {
   },
   methods: {
     async getQuestions() {
-      axios.get('https://savolho/api/')
+      await axios.get('https://savolho/api/')
         .then(response => {
+          // let data = response.data
           this.questions = response.data
+          this.questions.forEach(element => {
+            // questions: [categories: {categories: [ctg, ctg...]}]]
+            element.categories = JSON.parse(element.categories).categories
+          });
           console.log(this.questions);
         })
         .catch(error => {

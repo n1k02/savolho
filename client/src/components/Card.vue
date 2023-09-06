@@ -1,24 +1,24 @@
 <template>
   <div class="card">
     <div class="card__img">
-      <img :src="`${img}`" alt="">
+      <img :src="`src/questions/${image_url}`" alt="">
     </div>
     <div class="card__content">
       <div class="card__title">{{ title }}</div>
       <div class="card__author-info">
         <div class="card__author-img">
-          <img :src="`${author.img}`" alt="">
+          <!-- <img :src="`${author.img}`" alt=""> -->
         </div>
         от
         <div class="card__author-name">{{ author }}</div>
-        <div class="card__date"> &nbsp;&nbsp;&nbsp; | &nbsp;{{ date }}</div>
+        <div class="card__date"> &nbsp;&nbsp;&nbsp; | &nbsp;{{ date_added.slice(0, 10) }}</div>
       </div>
       <div class="card__category">
-        <div v-for="(c, index) in category" :key="c">
-          <div class="ctg" :class="`${index % 2  ? 'purple': 'red'}`">{{ c }}</div>
+        <div v-for="(c, index) in categories" :key="c">
+          <div class="ctg" :class="`${index % 2 ? 'purple' : 'red'}`">{{ c }}</div>
         </div>
       </div>
-      <div class="card__text">{{ description }}</div>
+      <div class="card__description">{{ description }}</div>
       <div class="card__menu">
         <div class="card__likes">
           Like | Оценить
@@ -37,8 +37,11 @@ export default {
       counter: 0
     }
   },
+  mounted() {
+    console.log(this.img_url);
+  },
   props: {
-    img_url: {
+    image_url: {
       type: String,
     },
     title: {
@@ -54,10 +57,14 @@ export default {
       type: Number,
       default: 0
     },
-    date: {
+    likes: {
+      type: Number,
+      default: 0
+    },
+    date_added: {
       type: String,
     },
-    category: {
+    categories: {
       type: Array,
       default: []
     },
@@ -68,17 +75,21 @@ export default {
 <style lang="scss" scoped>
 .card {
   background: var(--white);
+  max-width: 100%;
   border-radius: 6px;
   box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   transition: 0.3s;
   cursor: pointer;
+  
   &:hover {
     transform: scale(1.01);
   }
+
   &__img {
     height: 222px;
     width: 100%;
+
     img {
       min-height: 100%;
       display: block;
@@ -146,10 +157,15 @@ export default {
       }
     }
   }
-  &__text {
+
+  &__description {
     padding-top: 11px;
     height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
+
   &__menu {
     margin-top: 5px;
     padding-top: 14px;
@@ -157,10 +173,10 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+
   &__likes {
     border: 0.5px solid var(--gray);
     padding: 3px 7px;
     border-radius: 8px;
   }
-}
-</style>
+}</style>
