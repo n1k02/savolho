@@ -1,8 +1,8 @@
 <template>
   <div class="category">
     <h3 class="category__header">Выберите тему:</h3>
-    <div v-for="ctg in $store.state.category" :key="ctg" @click="$store.commit('setFilterCtg', {filterCtg: ctg}); $store.commit('setActivePage', {activePage: 1})">
-      <div class="category__item">{{ ctg }}</div>
+    <div v-for="ctg in $store.state.category" :key="ctg" @click="$store.commit('setFilterCtg', {filterCtg: ctg}); $store.commit('setActivePage', {activePage: 'main'})">
+      <div class="category__item btn_white">{{ ctg }}</div>
     </div>
   </div>
 </template>
@@ -26,12 +26,6 @@ export default {
     text-align: center;
     border: 1px solid var(--gray);
     border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s ease;
-    &:hover {
-      color: var(--white);
-      background: var(--gray);
-    }
   }
 }
 </style>
