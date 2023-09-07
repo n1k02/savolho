@@ -5,7 +5,7 @@ $server_name = "localhost";
 $username = "root";
 $password = "";
 $dbname = "savolho"; 
-$tbname = "questions";
+$tbname = "categories";
 
 $conn = new mysqli($server_name, $username, $password, $dbname);
 
@@ -54,43 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo json_encode(array("message" => "Question created successfully"));
     } else {
         echo json_encode(array("error" => "Error when creating a question: " . $conn->error));
-    }
-} 
-// elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-//     // Update request
-//     $data = json_decode(file_get_contents("php://input"), true);
-//     $questionId = $data['id'];
-//     $newField1 = $data['field1'];
-//     $newField2 = $data['field2'];
-//     $newField3 = $data['field3'];
-//     $newField4 = $data['field4'];
-//     $newField5 = $data['field5'];
-//     $newField6 = $data['field6'];
-//     $newField7 = $data['field7'];
-//     $newField8 = $data['field8'];
-
-//     $sql = "UPDATE $tbname 
-//             SET field1 = '$newField1', field2 = '$newField2', field3 = '$newField3', field4 = '$newField4',
-//                 field5 = '$newField5', field6 = '$newField6', field7 = '$newField7', field8 = '$newField8'
-//             WHERE id = $questionId";
-    
-//     if ($conn->query($sql) === TRUE) {
-//         echo json_encode(array("message" => "Вопрос успешно обновлен"));
-//     } else {
-//         echo json_encode(array("error" => "Ошибка при обновлении вопроса: " . $conn->error));
-//     }
-// } 
-elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    // Delete request
-    $data = json_decode(file_get_contents("php://input"), true);
-    $questionId = $data['id'];
-
-    $sql = "DELETE FROM $tbname WHERE id = $questionId";
-    
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(array("message" => "The question was successfully deleted"));
-    } else {
-        echo json_encode(array("error" => "Error when deleting the question: " . $conn->error));
     }
 } else {
     http_response_code(405); // This method is not allowed 
