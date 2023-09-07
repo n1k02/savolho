@@ -6,14 +6,7 @@ const store = createStore({
             searchKeyWord: '',
             filterCtg: '',
             // activePage: 'main',
-            category: [
-                'Игры',
-                'Еда',
-                'Спорт',
-                'Технологии',
-                'Туризм',
-                'Автомобили',
-            ],
+            categories: [],
             activeCtg: ''
         }
     },
@@ -26,6 +19,9 @@ const store = createStore({
         // },
         setFilterCtg(state, payload) {
             state.filterCtg = payload.filterCtg
+        },
+        setCategories(state, payload) {
+            state.categories = payload.categories
         }
     }
 })

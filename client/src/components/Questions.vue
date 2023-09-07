@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <div class="grid__filterCtg" v-if="$store.state.filterCtg">{{$store.state.filterCtg}} <span class="grid__removeCtg" @click="$store.commit('setFilterCtg', {filterCtg: ''})">X</span></div>
-    <Card v-for="question in questions" :key='question.id'
+    <Card v-if="questions.length" v-for="question in questions" :key='question.id'
             :id='question.id'
             :title="question.title"
             :description="question.description"
@@ -13,6 +13,9 @@
             :likes='question.likes'
       >
     </Card>
+    <div v-else>
+        No questions
+    </div>
   </div>
 </template>
 
