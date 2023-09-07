@@ -20,7 +20,7 @@
       </div>
       <div class="form__row">
         <label for="image">image</label>
-        <input type="file" name="image">
+        <input type="file" name="image" id="imageInput" @input="setImage($event.target)" ref="imageInput">
       </div>
       
       <div class="form__row">
@@ -41,7 +41,6 @@ import axios from 'axios';
           description: '',
           author: this.$store.state.user.name,
           categories: [],
-          image_url: ''
         }
       }
     },
@@ -52,9 +51,15 @@ import axios from 'axios';
     },
     methods: {
       async addQuestion() {
-        const question = this.question
+        const imageInput = this.$refs.imageInput
+        const formData = new FormData();
+        formData.append('title', this.question.title)
+        formData.append('description', this.question.description)
+        formData.append('author', this.question.author)
+        formData.append('categories', this.question.categories)
+        formData.append('image', imageInput.files[0]);
         question.categories = JSON.stringify(question.categories)
-        await axios.post('https://savolho/api/', question)
+        await axios.post('https://savolho/api/', formData)
           .then(res => {
             console.log(res.data);
           })  
