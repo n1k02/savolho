@@ -1,14 +1,21 @@
 
 <?php
 
+
+// Set headers for CORS
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
 include_once './connector.php';
 
 $tbname = "questions";
 
 
-// Set headers for CORS
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -35,13 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $title = $data['title'];
     $description = $data['description'];
     $author = $data['author'];
-    $category = $data['category'];
+    $categories = $data['categories'];
     $date_added = $data['date_added'];
     $likes = $data['likes'];
     $image_url = $data['image_url'];
 
-    $sql = "INSERT INTO $tbname (id, title, description, author, category, date_added, likes, image_url)
-            VALUES ('$id', '$title', '$description', '$author', '$category', '$date_added', '$likes', '$image_url')";
+    $sql = "INSERT INTO $tbname (title, `description`, author, categories, image_url)
+            VALUES ('$title', '$description', '$author', '$categories', '$image_url')";
     
     if ($conn->query($sql) === TRUE) {
         echo json_encode(array("message" => "Question created successfully"));
@@ -49,30 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo json_encode(array("error" => "Error when creating a question: " . $conn->error));
     }
 } 
-// elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-//     // Update request
-//     $data = json_decode(file_get_contents("php://input"), true);
-//     $questionId = $data['id'];
-//     $newField1 = $data['field1'];
-//     $newField2 = $data['field2'];
-//     $newField3 = $data['field3'];
-//     $newField4 = $data['field4'];
-//     $newField5 = $data['field5'];
-//     $newField6 = $data['field6'];
-//     $newField7 = $data['field7'];
-//     $newField8 = $data['field8'];
-
-//     $sql = "UPDATE $tbname 
-//             SET field1 = '$newField1', field2 = '$newField2', field3 = '$newField3', field4 = '$newField4',
-//                 field5 = '$newField5', field6 = '$newField6', field7 = '$newField7', field8 = '$newField8'
-//             WHERE id = $questionId";
-    
-//     if ($conn->query($sql) === TRUE) {
-//         echo json_encode(array("message" => "Вопрос успешно обновлен"));
-//     } else {
-//         echo json_encode(array("error" => "Ошибка при обновлении вопроса: " . $conn->error));
-//     }
-// } 
 elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Delete request
     $data = json_decode(file_get_contents("php://input"), true);

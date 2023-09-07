@@ -1,4 +1,5 @@
 <?php
+
 // db connector
 $server_name = "localhost";
 $username = "root";
