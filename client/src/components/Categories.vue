@@ -9,19 +9,15 @@
 
 <script>
 import axios from 'axios';
+import { getCategories } from '../services';
 
 export default {
   methods: {
-    async getCategories() {
-      await axios.get('https://savolho/api/categories/')
-        .then(res => {
-          this.$store.commit('setCategories', {categories: res.data})
-        })
-    }
+   
   },
   mounted() {
-    if(this.$store.state.categories.length === 0) {
-      this.getCategories()
+    if(this.$store.state.categories.length <= 0) {
+      getCategories()
     }
   }
 }
