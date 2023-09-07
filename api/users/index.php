@@ -8,6 +8,9 @@ $tbname = "categories";
 // Set headers for CORS
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: GET, POST");    
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
 
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -35,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $description = $data['description'];
     $author = $data['author'];
     $category = $data['category'];
-    $date_added = $data['date_added'];
-    $likes = $data['likes'];
+    $date_added = 'DEFAULT';
+    $likes = 'DEFAULT';
     $image_url = $data['image_url'];
 
     $sql = "INSERT INTO $tbname (id, title, description, author, category, date_added, likes, image_url)
