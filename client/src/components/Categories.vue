@@ -1,24 +1,22 @@
 <template>
   <div class="category">
     <h3 class="category__header">Выберите тему:</h3>
-    <div v-for="ctg in $store.state.categories" :key="ctg" @click="$store.commit('setFilterCtg', {filterCtg: ctg}); $store.commit('setActivePage', {activePage: 'main'})">
+    <div v-for="ctg in $store.state.categories" :key="ctg" @click="$store.commit('setFilterCtg', {filterCtg: ctg})">
       <div class="category__item btn_white">{{ ctg.name }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import { getCategories } from '../services';
 
 export default {
   methods: {
    
   },
   mounted() {
-    if(this.$store.state.categories.length <= 0) {
-      getCategories()
-    }
+    if(!this.$store.state.categories.length) {
+        this.$store.dispatch('fetchCategories')
+      }
   }
 }
 </script>

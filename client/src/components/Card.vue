@@ -14,8 +14,10 @@
         <div class="card__date"> &nbsp;&nbsp;&nbsp; | &nbsp;{{ date_added.slice(0, 10) }}</div>
       </div>
       <div class="card__category">
-        <div v-for="(c, index) in categories" :key="c">
-          <div class="ctg" :class="`${index % 2 ? 'purple' : 'red'}`">{{ c }}</div>
+        <div v-for="(ctg, index) in categories" :key="ctg">
+          <div class="ctg" :class="`${index % 2 ? 'purple' : 'red'}`">
+          {{ $store.getters.getCategoryById(ctg).name }}
+          </div>
         </div>
       </div>
       <div class="card__description">{{ description }}</div>
@@ -38,7 +40,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.img_url);
+    
   },
   props: {
     image_url: {

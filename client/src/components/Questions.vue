@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <div class="grid__filterCtg" v-if="$store.state.filterCtg">{{$store.state.filterCtg}} <span class="grid__removeCtg" @click="$store.commit('setFilterCtg', {filterCtg: ''})">X</span></div>
-    <Card v-if="questions.length" v-for="question in questions" :key='question.id'
+    <Card v-if="$store.state.questions.length" v-for="question in $store.state.questions" :key='question.id'
             :id='question.id'
             :title="question.title"
             :description="question.description"
@@ -22,35 +22,9 @@
 <script>
 import Card from "./Card.vue";
 // import {questions} from "../questions.json"
-import axios from 'axios'
 
 export default {
   components: {Card},
-  data(){
-    return {
-      questions: [],
-    }
-  },
-  methods: {
-    async getQuestions() {
-      await axios.get('https://savolho/api/')
-        .then(response => {
-          // let data = response.data
-          this.questions = response.data
-          this.questions.forEach(element => {
-            // questions: [categories: {categories: [ctg, ctg...]}]]
-            element.categories = JSON.parse(element.categories).categories
-          });
-          console.log(this.questions);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-    }
-  },
-  mounted() {
-    this.getQuestions()
-  },
   computed: {
     getSearchKeyWord() {
       return this.$store.state.searchKeyWord

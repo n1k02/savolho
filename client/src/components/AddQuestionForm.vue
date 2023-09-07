@@ -14,7 +14,7 @@
         <label for="categories">Categories</label>
         <option disabled value="">Select category</option>
         <select name="categories" class="form" multiple v-model="question.categories">
-          <option v-for="ctg in $store.state.categories" :value="ctg.name">{{ ctg.name }}</option>
+          <option v-for="ctg in $store.state.categories" :value="ctg.id" :key="ctg.id">{{ ctg.name }}</option>
         </select>
         
       </div>
@@ -32,7 +32,6 @@
 
 <script>
 import axios from 'axios';
-import { getCategories } from '../services';
 
   export default {
     data() {
@@ -40,7 +39,7 @@ import { getCategories } from '../services';
         question: {
           title: '',
           description: '',
-          author: 'Jason Statham',
+          author: this.$store.state.user.name,
           categories: [],
           image_url: ''
         }
@@ -48,14 +47,14 @@ import { getCategories } from '../services';
     },
     mounted() {
       if(this.$store.state.categories.length <= 0) {
-        getCategories()
+        this.$store.dispatch('fetchCategories')
       }
     },
     methods: {
-      addQuestion() {
-        axios.post('https://savolho/', {
-          
-        })
+      async addQuestion() {
+        const question = this.question
+        question.categories = JSON.stringify(question.categories)
+        await axios.post('https://savolho/api/', question)
           .then(res => {
             console.log(res.data);
           })  

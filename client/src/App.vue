@@ -4,8 +4,13 @@
  
 </template>
 
-<script setup>
-
+<script>
+export default {
+  mounted() {
+    this.$store.dispatch('fetchQuestions')
+    this.$store.dispatch('fetchCategories')
+  },
+}
 </script>
 
 <style lang="scss">
