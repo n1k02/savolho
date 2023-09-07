@@ -1,17 +1,10 @@
 
 <?php
-// db connector
-$server_name = "localhost";
-$username = "root";
-$password = "";
-$dbname = "savolho"; 
+
+include_once './connector.php';
+
 $tbname = "questions";
 
-$conn = new mysqli($server_name, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Db connection error: " . $conn->connect_error);
-}
 
 // Set headers for CORS
 header("Access-Control-Allow-Origin: *");
