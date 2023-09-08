@@ -31,16 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Insert request
     $data = json_decode(file_get_contents("php://input"), true);
     $id = 'DEFAULT';
-    $title = $data['title'];
-    $description = $data['description'];
-    $author = $data['author'];
-    $category = $data['category'];
-    $date_added = $data['date_added'];
-    $likes = $data['likes'];
-    $image_url = $data['image_url'];
+    $name = $data['name'];
 
-    $sql = "INSERT INTO $tbname (id, title, description, author, category, date_added, likes, image_url)
-            VALUES ('$id', '$title', '$description', '$author', '$category', '$date_added', '$likes', '$image_url')";
+    $sql = "INSERT INTO $tbname (name) VALUES ('$name')";
     
     if ($conn->query($sql) === TRUE) {
         echo json_encode(array("message" => "Question created successfully"));
