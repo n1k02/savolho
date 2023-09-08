@@ -13,14 +13,14 @@
       <div class="form__row">
         <label for="categories">Categories</label>
         <option disabled value="">Select category</option>
-        <select name="categories" class="form" multiple v-model="question.categories">
+        <select name="categories" class="form" multiple v-model="question.categories.categories">
           <option v-for="ctg in $store.state.categories" :value="ctg.id" :key="ctg.id">{{ ctg.name }}</option>
         </select>
         
       </div>
       <div class="form__row">
         <label for="image">image</label>
-        <input type="file" name="image" id="imageInput" @input="setImage($event.target)" ref="imageInput">
+        <input type="file" name="image" id="imageInput" ref="imageInput">
       </div>
       
       <div class="form__row">
@@ -40,7 +40,9 @@ import axios from 'axios';
           title: '',
           description: '',
           author: this.$store.state.user.name,
-          categories: [],
+          categories: {
+            categories: []
+          },
         }
       }
     },
@@ -56,9 +58,8 @@ import axios from 'axios';
         formData.append('title', this.question.title)
         formData.append('description', this.question.description)
         formData.append('author', this.question.author)
-        formData.append('categories', this.question.categories)
+        formData.append('categories', JSON.stringify(this.question.categories))
         formData.append('image', imageInput.files[0]);
-        question.categories = JSON.stringify(question.categories)
         await axios.post('https://savolho/api/', formData)
           .then(res => {
             console.log(res.data);

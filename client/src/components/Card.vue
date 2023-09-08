@@ -16,7 +16,7 @@
       <div class="card__category">
         <div v-for="(ctg, index) in categories" :key="ctg">
           <div class="ctg" :class="`${index % 2 ? 'purple' : 'red'}`">
-          {{ $store.getters.getCategoryById(ctg).name }}
+          {{ $store.getters.getCategoryById(ctg)?.name }}
           </div>
         </div>
       </div>
