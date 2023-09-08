@@ -37,16 +37,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert request
-    $data = json_decode(file_get_contents("php://input"), true);
-    $id = 'DEFAULT';
+    $data = $_POST;
     $title = $data['title'];
     $description = $data['description'];
     $author = $data['author'];
     $categories = $data['categories'];
-    $date_added = $data['date_added'];
-    $likes = $data['likes'];
-    $image_url = $data['image_url'];
 
+    $targetDir = '../client/public/src/questions/';
+    
+    // Генерируем уникальное имя файла
+    $uniqueName = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+    $targetFile = $targetDir . $uniqueName;
+
+    // Проверяем, является ли файл изображением
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+    if (in_array($imageFileType, array('jpg', 'jpeg', 'png', 'gif'))) {
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
+            $name = $_POST['name']; // Получаем текстовые данные
+            echo 'Изображение успешно загружено. Имя: ' . $name;
+        } else {
+            echo 'Ошибка при сохранении изображения.';
+        }
+    } else {
+        echo 'Поддерживаемые форматы изображений: JPG, JPEG, PNG, GIF.';
+    }
+
+    $image_url = $uniqueName;
     $sql = "INSERT INTO $tbname (title, `description`, author, categories, image_url)
             VALUES ('$title', '$description', '$author', '$categories', '$image_url')";
     
