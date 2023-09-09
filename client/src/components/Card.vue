@@ -9,7 +9,7 @@
         <div class="card__author-img">
           <!-- <img :src="`${author.img}`" alt=""> -->
         </div>
-        от
+        <!-- от -->
         <div class="card__author-name">{{ author }}</div>
         <div class="card__date"> &nbsp;&nbsp;&nbsp; | &nbsp;{{ date_added.slice(0, 10) }}</div>
       </div>
@@ -76,11 +76,12 @@ export default {
 
 <style lang="scss" scoped>
 .card {
+  display: flex;
+  flex-direction: column;
   background: var(--white);
   max-width: 100%;
   border-radius: 6px;
   box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
   transition: 0.3s;
   cursor: pointer;
   
@@ -93,14 +94,20 @@ export default {
     width: 100%;
 
     img {
-      min-height: 100%;
+      min-width: 100%;
+      height: 100%;
       display: block;
       object-fit: cover;
+      object-position: 50% 50%;
     }
   }
 
   &__content {
     padding: 23px 23px 10px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
   }
 
   &__title {
@@ -112,10 +119,10 @@ export default {
     font-size: 12px;
     align-items: center;
     padding-top: 5px;
+    justify-content: end;
   }
 
   &__author-img {
-    display: inline-block;
     border-radius: 50%;
     overflow: hidden;
     width: 30px;
@@ -123,7 +130,6 @@ export default {
     margin-right: 10px;
 
     img {
-      min-height: 100%;
       display: block;
       object-fit: cover;
     }
@@ -142,13 +148,14 @@ export default {
 
   &__category {
     display: flex;
+    flex-wrap: wrap;
     padding-top: 12px;
-
+    max-width: 100%;
     & .ctg {
-      padding: 1px 9px;
+      padding: 3px 9px;
       border-radius: 17px;
       margin-right: 7px;
-
+      margin-bottom: 10px;
       &.red {
         background: rgba(234, 84, 85, 0.12);
         color: #EA5455;
@@ -166,6 +173,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+    flex: 1 1 100%;
   }
 
   &__menu {
