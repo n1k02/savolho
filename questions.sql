@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 07 2023 г., 16:35
+-- Время создания: Сен 09 2023 г., 14:22
 -- Версия сервера: 8.0.30
 -- Версия PHP: 7.2.34
 
@@ -44,7 +44,7 @@ CREATE TABLE `questions` (
 
 INSERT INTO `questions` (`id`, `title`, `description`, `author`, `categories`, `date_added`, `likes`, `image_url`) VALUES
 (2, 'some title', 'description', 'author', '{\"categories\": [\"1\", \"2\"]}', '2023-09-05 11:22:22', NULL, 'img.png'),
-(4, 'Question 2', 'some description', 'Author 2', '{\"categories\": [\"3\", \"4\"]}', '2023-09-06 08:27:06', 5, 'img2.png');
+(18, 'Second question', 'Second description', 'Nik', '{\"categories\": [\"2\", \"6\"]}', '2023-09-09 13:31:28', NULL, '64fc498088e20.jpg');
 
 --
 -- Индексы сохранённых таблиц
@@ -64,7 +64,7 @@ ALTER TABLE `questions`
 -- AUTO_INCREMENT для таблицы `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

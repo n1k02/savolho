@@ -12,7 +12,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 // mysqli connector
 include_once '../connector.php'; // ЭТО НАДО, ДЛЯ ПОДКЛЮЧЕНИЯ К БД
 
-$tbname = "Users";
+$tbname = "users";
 
 
 // check method

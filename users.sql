@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 07 2023 г., 06:49
+-- Время создания: Сен 09 2023 г., 14:23
 -- Версия сервера: 8.0.30
 -- Версия PHP: 7.2.34
 
@@ -18,50 +18,51 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `User`
+-- База данных: `savolho`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `User`
+-- Структура таблицы `users`
 --
 
-CREATE TABLE `User` (
-  `user_id` int NOT NULL,
-  `user_name` varchar(32) NOT NULL,
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `email` varchar(64) NOT NULL,
   `password_hash` varchar(32) NOT NULL,
   `registration_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Дамп данных таблицы `User`
+-- Дамп данных таблицы `users`
 --
 
-INSERT INTO `User` (`user_id`, `user_name`, `email`, `password_hash`, `registration_date`) VALUES
-(1, 'Nurmuhammad ', 'nurmuhammad.rn@gmail.com', '8255665', '2023-09-07 06:46:15'),
-(2, 'Nurmuhammad', 'nurmuhammad.rn@gmail.com', '8255665', '2023-09-07 06:46:57');
+INSERT INTO `users` (`id`, `name`, `email`, `password_hash`, `registration_date`) VALUES
+(1, 'Nurmuhammad', 'nurmuhammad.rn@gmail.com', '8255665', '2023-09-07 06:46:15');
 
 --
 -- Индексы сохранённых таблиц
 --
 
 --
--- Индексы таблицы `User`
+-- Индексы таблицы `users`
 --
-ALTER TABLE `User`
-  ADD PRIMARY KEY (`user_id`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_name` (`name`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
 --
--- AUTO_INCREMENT для таблицы `User`
+-- AUTO_INCREMENT для таблицы `users`
 --
-ALTER TABLE `User`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
