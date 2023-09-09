@@ -1,22 +1,31 @@
 
+<!-- НУРИК ЭТО ТВОЯ РАБОТА -->
+
 <?php
 
-include_once '../connector.php';
-
-$tbname = "categories";
 
 // Set headers for CORS
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST");    
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Methods: POST, GET");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+// mysqli connector
+include_once '../connector.php'; // ЭТО НАДО, ДЛЯ ПОДКЛЮЧЕНИЯ К БД
+
+$tbname = "Users";
 
 
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
- 
-    // Select request
+    // ГЕТ ЗАПРОС
+    // ТУТ КРЧ НЕ ЗНАЮ, ПРОВЕРКА ПО ЛОГИНУ И ПАРОЛЮ ВРОДЕ ТОЖЕ ЗДЕСЬ ДЕЛАЕТСЯ 
+
+    // SQL ЗАПРОС
     $sql = "SELECT * FROM " . $tbname;
+
+    
+    
+    
     $result = $conn->query($sql);
 
     // Processing result and send to client
@@ -30,21 +39,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         echo json_encode(array("message" => "Question not found"));
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ПОСТ ЗАПРОС
+    
+    $data = $_POST; // МАССИВ ДАННЫХ КОТОРЫЕ ТЫ ЧЕРЕЗ АХИОС ОТПРАВЛЯЕШЬ
 
-    // Insert request
-    $data = json_decode(file_get_contents("php://input"), true);
-    $id = 'DEFAULT';
     $title = $data['title'];
     $description = $data['description'];
-    $author = $data['author'];
-    $category = $data['category'];
-    $date_added = 'DEFAULT';
-    $likes = 'DEFAULT';
-    $image_url = $data['image_url'];
 
-    $sql = "INSERT INTO $tbname (id, title, description, author, category, date_added, likes, image_url)
-            VALUES ('$id', '$title', '$description', '$author', '$category', '$date_added', '$likes', '$image_url')";
     
+
+    // SQL ЗАПРОС, СВОИ ДАННЫЕ ПОСТАВИШЬ
+    $sql = "INSERT INTO $tbname (title, `description`)
+            VALUES ('$title', '$description')";
+
     if ($conn->query($sql) === TRUE) {
         echo json_encode(array("message" => "Question created successfully"));
     } else {
