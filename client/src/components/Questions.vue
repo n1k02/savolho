@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <div class="grid__filterCtg" v-if="$store.state.filterCtg">{{$store.state.filterCtg}} <span class="grid__removeCtg" @click="$store.commit('setFilterCtg', {filterCtg: ''})">X</span></div>
+    <div class="grid__filterCtg" v-if="$store.state.searchCategory.name">{{$store.state.searchCategory.name}} <span class="grid__removeCtg" @click="$store.commit('setSearchCategory', ''); $store.dispatch('fetchQuestions')">X</span></div>
     <Card v-if="$store.state.questions.length" v-for="question in $store.state.questions" :key='question.id'
             :id='question.id'
             :title="question.title"
@@ -25,6 +25,9 @@ import Card from "./Card.vue";
 
 export default {
   components: {Card},
+  mounted() {
+    this.$store.dispatch('fetchQuestions')
+  },
   computed: {
     getSearchKeyWord() {
       return this.$store.state.searchKeyWord
@@ -38,7 +41,7 @@ export default {
       //     return question
       //   }
       // })
-    }
+    },
   }
 }
 </script>

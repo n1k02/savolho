@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <input type="search" name="search" id="search" placeholder="Поиск по сайту" @input="$store.commit('setSearchKeyWord', {searchKeyWord: $event.target.value.toLowerCase()})">
+    <input type="search" name="search" id="search" placeholder="Поиск по сайту" :value="$store.state.searchKeyword" @input="$store.commit('setSearchKeyword', $event.target.value.toLowerCase()); $store.dispatch('fetchQuestions')">
     <div class="search__icon">
       <img src="../assets/find.svg" class="find" alt="find">
     </div>

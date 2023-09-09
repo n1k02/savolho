@@ -60,7 +60,7 @@ import axios from 'axios';
         formData.append('author', this.question.author)
         formData.append('categories', JSON.stringify(this.question.categories))
         formData.append('image', imageInput.files[0]);
-        await axios.post('https://savolho/api/', formData)
+        await axios.post('questions/', formData)
           .then(res => {
             console.log(res.data);
           })  

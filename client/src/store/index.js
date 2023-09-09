@@ -8,11 +8,9 @@ const store = createStore({
                 name: 'Nik'
             },
             questions: [],
-            searchKeyWord: '',
-            filterCtg: '',
-            // activePage: 'main',
-            categories: [],
-            activeCtg: ''
+            searchKeyword: '',
+            searchCategory: {},
+            categories: []
         }
     },
     getters: {
@@ -27,20 +25,27 @@ const store = createStore({
         setCategories(state, categories) {
             state.categories = categories
         },
-        setSearchKeyWord (state, payload) {
-            state.searchKeyWord = payload.searchKeyWord
+        setSearchKeyword (state, searchKeyword) {
+            state.searchKeyword = searchKeyword
         },
         // setActivePage(state, payload) {
         //     state.activePage = payload.activePage
         // },
-        setFilterCtg(state, payload) {
-            state.filterCtg = payload.filterCtg
+        setSearchCategory(state, searchCategory) {
+            state.searchCategory = searchCategory
         },
         
     },
     actions: {
         async fetchQuestions({state, commit}) {
-            await axios.get('https://savolho/api/')
+            state.questions = []
+
+            await axios.get(`questions/`, {
+                params: {
+                    searchCategory: state.searchCategory.id || undefined,
+                    searchKeyword: state.searchKeyword || undefined
+                }
+            })
               .then(response => {
                 let data = response.data
                 data.forEach(element => {
@@ -53,7 +58,7 @@ const store = createStore({
               })
         },
         async fetchCategories({state, commit}) {
-            await axios.get('https://savolho/api/categories/')
+            await axios.get('categories/')
               .then(res => {
                 commit('setCategories', res.data)
               })

@@ -7,7 +7,6 @@
 <script>
 export default {
   mounted() {
-    this.$store.dispatch('fetchQuestions')
     this.$store.dispatch('fetchCategories')
   },
 }

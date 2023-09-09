@@ -1,7 +1,7 @@
 <template>
   <div class="category">
     <h3 class="category__header">Выберите тему:</h3>
-    <div v-for="ctg in $store.state.categories" :key="ctg" @click="$store.commit('setFilterCtg', {filterCtg: ctg})">
+    <div href="popular" v-for="ctg in $store.state.categories" :key="ctg" @click="$store.commit('setSearchCategory', ctg); $router.push('popular/')">
       <div class="category__item btn_white">{{ ctg.name }}</div>
     </div>
   </div>
@@ -11,7 +11,7 @@
 
 export default {
   methods: {
-   
+
   },
   mounted() {
     if(!this.$store.state.categories.length) {
