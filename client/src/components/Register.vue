@@ -2,19 +2,19 @@
   <div class="register">
     <div>
       <form @submit.prevent="submit">
-        <div>
+        <div class="form__row">
           <label for="full_name">Full Name:</label>
           <input type="text" name="full_name" v-model="form.full_name" />
         </div>
-        <div>
+        <div class="form__row">
           <label for="password">Password:</label>
           <input type="password" name="password" v-model="form.password" />
         </div>
-        <div>
+        <div class="form__row">
           <label for="email">Email:</label>
           <input type="text" name="email" v-model="form.email" />
         </div>
-        <button type="submit">Submit</button>
+          <button type="submit">Submit</button>
       </form>
     </div>
     <p v-if="showError" id="error">Username already exists</p>
@@ -62,33 +62,32 @@ export default {
 form {
   display: flex;
   flex-direction: column;
-  place-content: center;
 }
-label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
+.form__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-label[for="email"] {
-  padding-right: 40px;
-}
-button[type="submit"] {
+button {
+  margin-top: 10px;
+  width: 100%;
   background-color: var(--gray);
   color: white;
   padding: 12px 20px;
   cursor: pointer;
   border-radius: 30px;
-  max-width: 100px;
-  margin-left: 60px;
   align-self: center;
+  transition: all 0.3s ease;
 }
-button[type="submit"]:hover {
-  background-color: #45a049;
+button:hover {
+  background-color: rgba(0, 0, 0, 0.6);
 }
 input {
-  margin: 5px;
   box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
   padding: 10px;
   border-radius: 30px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 #error {
   color: red;
