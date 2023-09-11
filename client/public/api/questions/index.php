@@ -12,6 +12,23 @@ include_once '../connector.php';
 
 $tbname = "questions";
 
+function uploadImage($targetDir, $imageFile) {
+    // Генерируем уникальное имя файла
+    $uniqueName = uniqid() . '.' . pathinfo($imageFile['name'], PATHINFO_EXTENSION);
+    $targetFile = $targetDir . $uniqueName;
+
+    // Проверяем, является ли файл изображением
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+    if (in_array($imageFileType, array('jpg', 'jpeg', 'png', 'gif'))) {
+        if (move_uploaded_file($imageFile['tmp_name'], $targetFile)) {
+            return $uniqueName; // Возвращаем уникальное имя сохраненного изображения
+        } else {
+            return "Error when saving image.";
+        }
+    } else {
+        return "Supported image formats: JPG, JPEG, PNG, GIF";
+    }
+}
 
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -54,29 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $description = $data['description'];
     $author = $data['author'];
     $categories = $data['categories'];
+
     $image_url = "";
     $targetDir = '../../src/questions/';
 
     if ($_FILES['image']) {
-        // Генерируем уникальное имя файла
-        $uniqueName = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $targetFile = $targetDir . $uniqueName;
-
-        // Проверяем, является ли файл изображением
-        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-        if (in_array($imageFileType, array('jpg', 'jpeg', 'png', 'gif'))) {
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
-                // echo json_encode('Image successfully uploaded. Name: ' . $_FILES['image']['name']);
-            } else {
-                echo json_encode(array("error" => "Error when saving image."));
-                exit;
-            }
-        } else {
-            echo json_encode(array("error" => "Supported image formats: JPG, JPEG, PNG, GIF"));
-            exit;
-        }
-
-        $image_url = $uniqueName;
+        $image_url = uploadImage($targetDir, $_FILES['image']);
     }
 
     $sql = "INSERT INTO $tbname (title, `description`, author, categories, image_url)

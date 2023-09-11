@@ -39,7 +39,7 @@ import axios from 'axios';
         question: {
           title: '',
           description: '',
-          author: this.$store.state.user.name,
+          author: this.$store.state.user.id,
           categories: {
             categories: []
           },

@@ -5,7 +5,7 @@ const store = createStore({
     state () {
         return {
             user: {
-                name: 'Nik'
+                id: 1
             },
             questions: [],
             searchKeyword: '',
