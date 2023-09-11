@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $author = $data['author'];
     $categories = $data['categories'];
 
-    $image_url = "";
+    $image_url = NULL;
     $targetDir = '../../src/questions/';
 
     if ($_FILES['image']) {
