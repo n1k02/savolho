@@ -14,48 +14,44 @@ include_once '../connector.php'; // ЭТО НАДО, ДЛЯ ПОДКЛЮЧЕНИ
 
 $tbname = "users";
 
-
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // ГЕТ ЗАПРОС
-    // ТУТ КРЧ НЕ ЗНАЮ, ПРОВЕРКА ПО ЛОГИНУ И ПАРОЛЮ ВРОДЕ ТОЖЕ ЗДЕСЬ ДЕЛАЕТСЯ 
+    // Предполагаем, что у вас уже есть настройки подключения к базе данных и объект $conn
 
-    // SQL ЗАПРОС
+    // Название таблицы, из которой вы хотите извлечь данные
+    $tbname = "users"; // Замените на имя вашей таблицы
+
+    // SQL-запрос для извлечения данных из таблицы
     $sql = "SELECT * FROM " . $tbname;
 
-    
-    
-    
+    // Выполняем SQL-запрос
     $result = $conn->query($sql);
 
-    // Processing result and send to client
+    // Обрабатываем результат и отправляем клиенту
     if ($result->num_rows > 0) {
-        $questions = array();
+        $data = array();
         while ($row = $result->fetch_assoc()) {
-            $questions[] = $row;
+            $data[] = $row;
         }
-        echo json_encode($questions);
+        echo json_encode($data);
     } else {
-        echo json_encode(array("message" => "Question not found"));
+        echo json_encode(array("message" => "No data found"));
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // ПОСТ ЗАПРОС
-    
-    $data = $_POST; // МАССИВ ДАННЫХ КОТОРЫЕ ТЫ ЧЕРЕЗ АХИОС ОТПРАВЛЯЕШЬ
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-    $title = $data['title'];
-    $description = $data['description'];
+    // Хеширование пароля (важно для безопасности)
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    
-
-    // SQL ЗАПРОС, СВОИ ДАННЫЕ ПОСТАВИШЬ
-    $sql = "INSERT INTO $tbname (title, `description`)
-            VALUES ('$title', '$description')";
+    // SQL-запрос для вставки данных в базу данных
+    $sql = "INSERT INTO users (name, email, password_hash) VALUES ('$name', '$email', '$hashedPassword')";
 
     if ($conn->query($sql) === TRUE) {
-        echo json_encode(array("message" => "Question created successfully"));
+        echo "Регистрация успешно завершена.";
     } else {
-        echo json_encode(array("error" => "Error when creating a question: " . $conn->error));
+        echo "Ошибка при регистрации: " . $conn->error;
     }
 } else {
     http_response_code(405); // This method is not allowed 

@@ -34,19 +34,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["LogIn"]),
-    async submit() {
-      const User = new FormData()
-      User.append("username", this.form.email)
-      User.append("password", this.form.password)
-      try {
-        await this.LogIn(User)
-        this.$router.push("/posts")
-        this.showError = false
-      } catch (error) {
-        this.showError = true
-      }
-    },
+    
   },
 }
 </script>
