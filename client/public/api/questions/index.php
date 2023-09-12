@@ -2,10 +2,28 @@
 <?php
 
 
+session_start();
+
+echo $_SESSION['id'];
+
 // Set headers for CORS
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+
+
+
+if (isset($_SESSION['user_id'])) {
+    // Пользователь вошел
+    $user_id = $_SESSION['user_id']; // Получаем ID пользователя из сессии
+    $user_name = $_SESSION['user_name']; // Получаем имя пользователя из сессии
+} else {
+    // Пользователь не вошел, выполните соответствующие действия, например, перенаправьте на страницу входа
+    echo "unauthorized";
+    exit();
+}
+
 
 // mysqli connector
 include_once '../connector.php';

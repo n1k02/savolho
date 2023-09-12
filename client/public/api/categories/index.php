@@ -1,6 +1,7 @@
 
 <?php
 
+
 include_once '../connector.php';
 
 $tbname = "categories";

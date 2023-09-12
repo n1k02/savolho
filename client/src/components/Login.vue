@@ -4,7 +4,7 @@
       <form @submit.prevent="submit">
         <div>
           <label for="email">Email:</label>
-          <input type="text" name="enail" v-model="form.enail" />
+          <input type="text" name="email" v-model="form.email" />
         </div>
         <div>
           <label for="password">Password:</label>
@@ -13,14 +13,15 @@
         <div class="register-link">
           <router-link to="/register"> Register </router-link>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" @click="login()">Submit</button>
       </form>
       <p v-if="showError" id="error">Username or Password is incorrect</p>
     </div>
   </div>
 </template>
 <script>
-import { mapActions } from "vuex"
+import axios from 'axios'
+
 export default {
   name: "Login",
   components: {},
@@ -34,7 +35,19 @@ export default {
     }
   },
   methods: {
-    
+    async login () {
+      const data = new FormData()
+      data.append('email', this.form.email)
+      data.append('password', this.form.password)
+      try {
+          await axios.post('users/login/', data)
+            .then(res => {
+              console.log(res.status);
+            })
+      } catch(e) {
+        console.log(e);
+      }
+    }
   },
 }
 </script>

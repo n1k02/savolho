@@ -4,7 +4,7 @@
       <form @submit.prevent="submit">
         <div class="form__row">
           <label for="full_name">Full Name:</label>
-          <input type="text" name="full_name" v-model="form.full_name" />
+          <input type="text" name="full_name" v-model="form.name" />
         </div>
         <div class="form__row">
           <label for="password">Password:</label>
@@ -14,7 +14,7 @@
           <label for="email">Email:</label>
           <input type="text" name="email" v-model="form.email" />
         </div>
-          <button type="submit">Submit</button>
+          <button type="submit" @click="registration()">Submit</button>
       </form>
     </div>
     <p v-if="showError" id="error">Username already exists</p>
@@ -22,7 +22,8 @@
 </template>
 
 <script>
-import { mapActions } from "vuex"
+import axios from 'axios'
+
 export default {
   name: "Register",
   components: {},
@@ -30,23 +31,27 @@ export default {
     return {
       form: {
         email: "",
-        full_name: "",
+        name: "",
         password: "",
       },
       showError: false,
     }
   },
   methods: {
-    ...mapActions(["Register"]),
-    async submit() {
+    async registration() {
+      const data = new FormData()
+      data.append('name', this.form.name)
+      data.append('email', this.form.email)
+      data.append('password', this.form.password)
       try {
-        await this.Register(this.form)
-        this.$router.push("/posts")
-        this.showError = false
-      } catch (error) {
-        this.showError = true
+          await axios.post('users/registration/', data)
+            .then(res => {
+              console.log(res.status);
+            })
+      } catch(e) {
+        console.log(e);
       }
-    },
+    }
   },
 }
 </script>
