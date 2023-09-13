@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div>
-      <form @submit.prevent="submit">
+      <form @submit.prevent="submit"  @submit="checkForm">
         <div>
           <label for="email">Email:</label>
           <input type="text" name="email" v-model="form.email" />
@@ -14,6 +14,14 @@
           <router-link to="/register"> Register </router-link>
         </div>
         <button type="submit" @click="login()">Submit</button>
+        <br/>
+          <p v-if="showError" id="error">Username already exists</p>
+    <p v-if="errors.length">
+    <b id="error">Пожалуйста исправьте указанные ошибки:</b>
+    <ul>
+      <li v-for="error in errors">{{ error }}</li>
+    </ul>
+  </p>
       </form>
       <p v-if="showError" id="error">Username or Password is incorrect</p>
     </div>
@@ -27,6 +35,7 @@ export default {
   components: {},
   data() {
     return {
+      errors: [],
       form: {
         email: "",
         password: "",
@@ -35,6 +44,27 @@ export default {
     }
   },
   methods: {
+    checkForm: function (e) {
+      this.errors = [];
+      if(!this.form.password) {
+        this.errors.push('Укажите пароль');
+      }
+      if (!this.form.email) {
+        this.errors.push('Укажите электронную почту.');
+      } else if (!this.validEmail(this.form.email)) {
+        this.errors.push('Укажите корректный адрес электронной почты.');
+      }
+
+      if (!this.errors.length) {
+        return true;
+      }
+
+      e.preventDefault();
+    },
+    validEmail: function (email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+    },
     async login () {
       const data = new FormData()
       data.append('email', this.form.email)
