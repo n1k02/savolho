@@ -57,10 +57,10 @@ export default {
         this.errors.push('Укажите пароль.');
       }
       if (!this.form.email) {
-        this.errors.push('Укажите электронную почту.');
-      } else if (!this.validEmail(this.email)) {
-        this.errors.push('Укажите корректный адрес электронной почты.');
-      }
+        this.errors.push('Укажите электронную почту.');}
+      // } else if (!this.validEmail(this.email)) {
+      //   this.errors.push('Укажите корректный адрес электронной почты.');
+      // }
 
       if (!this.errors.length) {
         return true;
