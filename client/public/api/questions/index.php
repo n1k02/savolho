@@ -30,7 +30,8 @@ include_once '../connector.php';
 
 $tbname = "questions";
 
-function uploadImage($targetDir, $imageFile) {
+function uploadImage($targetDir, $imageFile)
+{
     // Генерируем уникальное имя файла
     $uniqueName = uniqid() . '.' . pathinfo($imageFile['name'], PATHINFO_EXTENSION);
     $targetFile = $targetDir . $uniqueName;
@@ -85,30 +86,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // Обработка исключения
         echo 'Произошла ошибка: ' . $e->getMessage();
     }
-}
- elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Insert request
-    $data = $_POST;
-    $title = $data['title'];
-    $description = $data['description'];
-    $author = $data['author'];
-    $categories = $data['categories'];
+    try {
 
-    $image_url = NULL;
-    $targetDir = '../../src/questions/';
 
-    if ($_FILES['image']) {
-        $image_url = uploadImage($targetDir, $_FILES['image']);
-    }
+        // Insert request
+        $data = $_POST;
+        $title = $data['title'];
+        $description = $data['description'];
+        $author = $data['author'];
+        $categories = $data['categories'];
 
-    $sql = "INSERT INTO $tbname (title, `description`, author, categories, image_url)
+        $image_url = NULL;
+        $targetDir = '../../src/questions/';
+
+        if ($_FILES['image']) {
+            $image_url = uploadImage($targetDir, $_FILES['image']);
+        }
+
+        $sql = "INSERT INTO $tbname (title, `description`, author, categories, image_url)
             VALUES ('$title', '$description', '$author', '$categories', '$image_url')";
 
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(array("message" => "Question created successfully"));
-    } else {
-        echo json_encode(array("error" => "Error when creating a question: " . $conn->error));
+        if ($conn->query($sql) === TRUE) {
+            echo json_encode(array("message" => "Question created successfully"));
+        } else {
+            echo json_encode(array("error" => "Error when creating a question: " . $conn->error));
+        }
+    } catch (Exception $e) {
+        // Обработка ошибок подключения к базе данных
+        http_response_code(500); // Внутренняя ошибка сервера
+        echo json_encode(array("error" => $e->getMessage()));
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Delete request
