@@ -61,13 +61,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     // Добавить поиск по title и description, если указан searchKeyword
-    if ($searchKeyword !== null) {
+    try{
+        if ($searchKeyword !== null) {
         if ($searchCategory !== null) {
             $sql .= " AND (title LIKE '%$searchKeyword%' OR description LIKE '%$searchKeyword%')";
         } else {
             $sql .= " WHERE (title LIKE '%$searchKeyword%' OR description LIKE '%$searchKeyword%')";
         }
     }
+} catch (Exception $e){
+    echo 'Произошла ошибка: ' . $e->getMessage();
+}
     
     $result = $conn->query($sql);
 
