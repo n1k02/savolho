@@ -50,42 +50,43 @@ function uploadImage($targetDir, $imageFile) {
 
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    try {
+        $searchCategory = isset($_GET['searchCategory']) ? $_GET['searchCategory'] : null;
+        $searchKeyword = isset($_GET['searchKeyword']) ? $_GET['searchKeyword'] : null;
 
-    $searchCategory = isset($_GET['searchCategory']) ? $_GET['searchCategory'] : null;
-    $searchKeyword = isset($_GET['searchKeyword']) ? $_GET['searchKeyword'] : null;
+        $sql = "SELECT * FROM " . $tbname;
 
-    $sql = "SELECT * FROM " . $tbname;
-
-    if ($searchCategory !== null) {
-        $sql .= " WHERE categories LIKE '%$searchCategory%'";
-    }
-
-    // Добавить поиск по title и description, если указан searchKeyword
-    try{
-        if ($searchKeyword !== null) {
         if ($searchCategory !== null) {
-            $sql .= " AND (title LIKE '%$searchKeyword%' OR description LIKE '%$searchKeyword%')";
-        } else {
-            $sql .= " WHERE (title LIKE '%$searchKeyword%' OR description LIKE '%$searchKeyword%')";
+            $sql .= " WHERE categories LIKE '%$searchCategory%'";
         }
-    }
-} catch (Exception $e){
-    echo 'Произошла ошибка: ' . $e->getMessage();
-}
-    
-    $result = $conn->query($sql);
 
-    // Processing result and send to client
-    if ($result->num_rows > 0) {
-        $questions = array();
-        while ($row = $result->fetch_assoc()) {
-            $questions[] = $row;
+        // Добавить поиск по title и description, если указан searchKeyword
+        if ($searchKeyword !== null) {
+            if ($searchCategory !== null) {
+                $sql .= " AND (title LIKE '%$searchKeyword%' OR description LIKE '%$searchKeyword%')";
+            } else {
+                $sql .= " WHERE (title LIKE '%$searchKeyword%' OR description LIKE '%$searchKeyword%')";
+            }
         }
-        echo json_encode($questions);
-    } else {
-        echo json_encode(array("message" => "Question not found"));
+
+        $result = $conn->query($sql);
+
+        // Processing result and send to client
+        if ($result->num_rows > 0) {
+            $questions = array();
+            while ($row = $result->fetch_assoc()) {
+                $questions[] = $row;
+            }
+            echo json_encode($questions);
+        } else {
+            echo json_encode(array("message" => "Question not found"));
+        }
+    } catch (Exception $e) {
+        // Обработка исключения
+        echo 'Произошла ошибка: ' . $e->getMessage();
     }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+}
+ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert request
     $data = $_POST;
