@@ -10,6 +10,12 @@ include_once '../../connector.php'; // ЭТО НАДО, ДЛЯ ПОДКЛЮЧЕ�
 
 $tbname = "users";
 
+// Функция для записи сообщения в файл логов
+function writeToLog($message) {
+    $logFile = 'log.txt'; // Укажите путь к файлу логов
+    error_log($message . "\n", 3, $logFile);
+}
+
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -25,15 +31,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($conn->query($sql) === TRUE) {
             echo json_encode(array("message" => "User created"));
+            writeToLog("User created: Name: $name, Email: $email");
         } else {
             echo json_encode(array("error" => "Registration error" . $conn->error));
+            writeToLog("Registration error: " . $conn->error);
         }
     } catch (Exception $e) {
         echo json_encode(array("error" => "An error occurred: " . $e->getMessage()));
+        writeToLog("An error occurred: " . $e->getMessage());
     }
 } else {
     http_response_code(405); // This method is not allowed
     echo json_encode(array("error" => "This method is not allowed"));
+    writeToLog("Method not allowed");
 }
 
 $conn->close();

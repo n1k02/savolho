@@ -52,6 +52,10 @@ function uploadImage($targetDir, $imageFile)
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
+
+        // Логирование GET-запроса
+        file_put_contents('../log.txt', 'GET request (questions): ' . date('Y-m-d H:i:s') . PHP_EOL, FILE_APPEND);
+
         $searchCategory = isset($_GET['searchCategory']) ? $_GET['searchCategory'] : null;
         $searchKeyword = isset($_GET['searchKeyword']) ? $_GET['searchKeyword'] : null;
 
@@ -85,11 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     } catch (Exception $e) {
         // Обработка исключения
         echo 'Произошла ошибка: ' . $e->getMessage();
+        file_put_contents('../log.txt', 'Error (questions): ' . date('Y-m-d H:i:s') . $e . PHP_EOL, FILE_APPEND);
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     try {
 
+        file_put_contents('../log.txt', 'POST request (questions): ' . date('Y-m-d H:i:s') . PHP_EOL, FILE_APPEND);
 
         // Insert request
         $data = $_POST;
@@ -110,13 +115,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         if ($conn->query($sql) === TRUE) {
             echo json_encode(array("message" => "Question created successfully"));
-        } else {
+        } else { 
             echo json_encode(array("error" => "Error when creating a question: " . $conn->error));
         }
     } catch (Exception $e) {
         // Обработка ошибок подключения к базе данных
         http_response_code(500); // Внутренняя ошибка сервера
         echo json_encode(array("error" => $e->getMessage()));
+        file_put_contents('../log.txt', 'Error (questions): ' . date('Y-m-d H:i:s') . $e . PHP_EOL, FILE_APPEND);
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Delete request
@@ -133,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 } else {
     http_response_code(405); // This method is not allowed 
     echo json_encode(array("error" => "This method is not allowed"));
+    file_put_contents('../log.txt', 'Error: ' . date('Y-m-d H:i:s') . "-" . "This method is not allowed", FILE_APPEND);
 }
 
 $conn->close();
