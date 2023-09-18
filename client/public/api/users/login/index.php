@@ -7,8 +7,15 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 session_start();
 
+// Функция для записи сообщения в файл логов
+function writeToLog($message) {
+    $logFile = 'logfile.txt'; // Укажите путь к файлу логов
+    error_log($message . "\n", 3, $logFile);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     http_response_code(200); // Устанавливаем HTTP статус 200 OK
+    writeToLog("GET request received");
 }
 
 // mysqli connector
@@ -43,25 +50,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['user_name'] = $row['name']; // Сохраняем имя пользователя в сессии
                     // Пароль верен
                     echo json_encode(array("message" => "Login successful", "user_id" => $row['id'], "user_name" => $row['name']));
+                    writeToLog("Login successful for user: " . $row['name']);
                 } else {
                     // Пароль неверен
                     echo json_encode(array("error" => "Incorrect password"));
+                    writeToLog("Incorrect password for user: " . $row['name']);
                 }
             } else {
                 // Пользователь с таким email не найден
                 echo json_encode(array("error" => "User not found"));
+                writeToLog("User not found for email: $email");
             }
 
             $stmt->close();
         } else {
             echo json_encode(array("message" => "No data found"));
+            writeToLog("No data found");
         }
     } catch (Exception $e) {
         echo json_encode(array("error" => "An error occurred: " . $e->getMessage()));
+        writeToLog("An error occurred: " . $e->getMessage());
     }
 } else {
     http_response_code(405); // This method is not allowed
     echo json_encode(array("error" => "This method is not allowed"));
+    writeToLog("Method not allowed");
 }
 
 $conn->close();

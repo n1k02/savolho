@@ -1,0 +1,1 @@
+Registration error: Data too long for column 'password_hash' at row 1
