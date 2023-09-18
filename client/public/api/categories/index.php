@@ -17,6 +17,10 @@ try {
 
     // check method
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+
+        //Логирование GET запросов
+        file_put_contents('../log.txt', 'GET request (catergories): ' . date('Y-m-d H:i:s') . PHP_EOL, FILE_APPEND);
+
         // Select request
         $sql = "SELECT * FROM " . $tbname;
         $result = $conn->query($sql);
@@ -47,6 +51,9 @@ try {
     } else {
         http_response_code(405); // This method is not allowed 
         echo json_encode(array("error" => "This method is not allowed"));
+
+        file_put_contents('../log.txt', 'Error: ' . date('Y-m-d H:i:s') . PHP_EOL, FILE_APPEND);
+
     }
 
     // Закрываем соединение с базой данных
