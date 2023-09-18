@@ -30,7 +30,8 @@ include_once '../connector.php';
 
 $tbname = "questions";
 
-function uploadImage($targetDir, $imageFile) {
+function uploadImage($targetDir, $imageFile)
+{
     // Генерируем уникальное имя файла
     $uniqueName = uniqid() . '.' . pathinfo($imageFile['name'], PATHINFO_EXTENSION);
     $targetFile = $targetDir . $uniqueName;
@@ -64,6 +65,9 @@ function writeToLog($message) {
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
+
+        // Логирование GET-запроса
+        writeToLog('GET request (questions)');
         $searchCategory = isset($_GET['searchCategory']) ? $_GET['searchCategory'] : null;
         $searchKeyword = isset($_GET['searchKeyword']) ? $_GET['searchKeyword'] : null;
 
@@ -103,32 +107,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         writeToLog($errorMessage);
         echo $errorMessage;
     }
-}
- elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
 
-    // Insert request
-    $data = $_POST;
-    $title = $data['title'];
-    $description = $data['description'];
-    $author = $data['author'];
-    $categories = $data['categories'];
+        file_put_contents('../log.txt', 'POST request (questions): ' . date('Y-m-d H:i:s') . PHP_EOL, FILE_APPEND);
 
-    $image_url = NULL;
-    $targetDir = '../../src/questions/';
+        // Insert request
+        $data = $_POST;
+        $title = $data['title'];
+        $description = $data['description'];
+        $author = $data['author'];
+        $categories = $data['categories'];
 
-    if ($_FILES['image']) {
-        $image_url = uploadImage($targetDir, $_FILES['image']);
-    }
+        $image_url = NULL;
+        $targetDir = '../../src/questions/';
 
-    $sql = "INSERT INTO $tbname (title, `description`, author, categories, image_url)
+        if ($_FILES['image']) {
+            $image_url = uploadImage($targetDir, $_FILES['image']);
+        }
+
+        $sql = "INSERT INTO $tbname (title, `description`, author, categories, image_url)
             VALUES ('$title', '$description', '$author', '$categories', '$image_url')";
     $logMessage = "POST request - title: $title, description: $description, author: $author, categories: $categories";
     writeToLog($logMessage);        
 
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(array("message" => "Question created successfully"));
-    } else {
-        echo json_encode(array("error" => "Error when creating a question: " . $conn->error));
+        if ($conn->query($sql) === TRUE) {
+            echo json_encode(array("message" => "Question created successfully"));
+        } else { 
+            echo json_encode(array("error" => "Error when creating a question: " . $conn->error));
+        }
+    } catch (Exception $e) {
+        // Обработка ошибок подключения к базе данных
+        http_response_code(500); // Внутренняя ошибка сервера
+        echo json_encode(array("error" => $e->getMessage()));
+        file_put_contents('../log.txt', 'Error (questions): ' . date('Y-m-d H:i:s') . $e . PHP_EOL, FILE_APPEND);
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Delete request
@@ -149,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $errorMessage = "This method is not allowed";
     writeToLog($errorMessage);
     echo json_encode(array("error" => "This method is not allowed"));
+    file_put_contents('../log.txt', 'Error: ' . date('Y-m-d H:i:s') . "-" . "This method is not allowed", FILE_APPEND);
 }
 
 $conn->close();
