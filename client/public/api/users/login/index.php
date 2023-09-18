@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo json_encode(array("message" => "No data found"));
         }
-    } catch (Exception $e) {
+    } catch ($e) {
         echo json_encode(array("error" => "An error occurred: " . $e->getMessage()));
     }
 } else {

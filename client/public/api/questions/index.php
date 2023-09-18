@@ -47,6 +47,19 @@ function uploadImage($targetDir, $imageFile) {
         return "Supported image formats: JPG, JPEG, PNG, GIF";
     }
 }
+function writeToLog($message) {
+    $logDirectory = '../../api/questions/log';
+    $logFile = $logDirectory . '../../api/questions/log';
+    
+    // Проверка наличия папки log, и создание её, если она не существует
+    if (!is_dir($logDirectory)) {
+        mkdir($logDirectory, 0777, true);
+    }
+    
+    $currentTime = date('Y-m-d H:i:s');
+    $logMessage = "[$currentTime] $message\n";
+    file_put_contents($logFile, $logMessage, FILE_APPEND);
+}
 
 // check method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -60,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $sql .= " WHERE categories LIKE '%$searchCategory%'";
         }
 
+
         // Добавить поиск по title и description, если указан searchKeyword
         if ($searchKeyword !== null) {
             if ($searchCategory !== null) {
@@ -68,6 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $sql .= " WHERE (title LIKE '%$searchKeyword%' OR description LIKE '%$searchKeyword%')";
             }
         }
+        $logMessage = "GET request - searchCategory: $searchCategory, searchKeyword: $searchKeyword";
+        writeToLog($logMessage);
 
         $result = $conn->query($sql);
 
@@ -84,6 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     } catch (Exception $e) {
         // Обработка исключения
         echo 'Произошла ошибка: ' . $e->getMessage();
+        writeToLog($errorMessage);
+        echo $errorMessage;
     }
 }
  elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -104,6 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $sql = "INSERT INTO $tbname (title, `description`, author, categories, image_url)
             VALUES ('$title', '$description', '$author', '$categories', '$image_url')";
+    $logMessage = "POST request - title: $title, description: $description, author: $author, categories: $categories";
+    writeToLog($logMessage);        
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(array("message" => "Question created successfully"));
@@ -116,6 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $questionId = $data['id'];
 
     $sql = "DELETE FROM $tbname WHERE id = $questionId";
+    $logMessage = "DELETE request - questionId: $questionId";
+    writeToLog($logMessage);
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(array("message" => "The question was successfully deleted"));
@@ -124,6 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 } else {
     http_response_code(405); // This method is not allowed 
+    $errorMessage = "This method is not allowed";
+    writeToLog($errorMessage);
     echo json_encode(array("error" => "This method is not allowed"));
 }
 
