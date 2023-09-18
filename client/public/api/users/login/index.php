@@ -9,7 +9,7 @@ session_start();
 
 // Функция для записи сообщения в файл логов
 function writeToLog($message) {
-    $logFile = 'logfile.txt'; // Укажите путь к файлу логов
+    $logFile = 'log.txt'; // Укажите путь к файлу логов
     error_log($message . "\n", 3, $logFile);
 }
 
