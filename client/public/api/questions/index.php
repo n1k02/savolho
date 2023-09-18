@@ -49,8 +49,8 @@ function uploadImage($targetDir, $imageFile)
     }
 }
 function writeToLog($message) {
-    $logDirectory = '../../api/questions/log';
-    $logFile = $logDirectory . '../../api/questions/log';
+    $logDirectory = '../';
+    $logFile = $logDirectory . 'log.txt';
     
     // Проверка наличия папки log, и создание её, если она не существует
     if (!is_dir($logDirectory)) {
@@ -67,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
 
         // Логирование GET-запроса
-        writeToLog('GET request (questions)');
         $searchCategory = isset($_GET['searchCategory']) ? $_GET['searchCategory'] : null;
         $searchKeyword = isset($_GET['searchKeyword']) ? $_GET['searchKeyword'] : null;
 
@@ -109,9 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-
-        file_put_contents('../log.txt', 'POST request (questions): ' . date('Y-m-d H:i:s') . PHP_EOL, FILE_APPEND);
-
         // Insert request
         $data = $_POST;
         $title = $data['title'];
@@ -161,7 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $errorMessage = "This method is not allowed";
     writeToLog($errorMessage);
     echo json_encode(array("error" => "This method is not allowed"));
-    file_put_contents('../log.txt', 'Error: ' . date('Y-m-d H:i:s') . "-" . "This method is not allowed", FILE_APPEND);
 }
 
 $conn->close();
