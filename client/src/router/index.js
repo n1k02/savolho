@@ -5,6 +5,7 @@ import Categories from '../views/Categories.vue'
 import AddQuestion from '../views/AddQuestion.vue'
 import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
+import Answer from '../components/Answer.vue'
 
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     { path: 'add-question', component: AddQuestion },
     { path: 'register', component: Register },
     { path: 'login', component: Login },
+    {path:'question/:id', component: Answer}
   ]},
  ,
 ];

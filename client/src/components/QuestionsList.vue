@@ -11,6 +11,7 @@
             :image_url='question.image_url'
             :answers='question.answers'
             :likes='question.likes'
+            @click="$router.push('/question/' + question.id)"
       >
     </Card>
     <div v-else>

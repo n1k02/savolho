@@ -1,12 +1,12 @@
 <template>
 <Layout>
-  <Questions/>
+  <QuestionsList/>
 </Layout>
 </template>
 
 <script setup>
 import Layout from '../components/Layout.vue'
-import Questions from '../components/Questions.vue'
+import QuestionsList from '../components/QuestionsList.vue';
 
 </script>
 
