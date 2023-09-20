@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Data><Question><id>2</id><title>some title</title><description>description</description><author>author</author><categories>{"categories": ["1", "2"]}</categories><data_added/></Question><Question><id>18</id><title>Second question</title><description>Second description</description><author>Nik</author><categories>{"categories": ["2", "6"]}</categories><data_added/></Question></Data>
