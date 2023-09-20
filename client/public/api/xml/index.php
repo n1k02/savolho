@@ -33,18 +33,46 @@ if ($result) {
         $questions->addChild('description', $row['description']);
         $questions->addChild('author', $row['author']);
         $questions->addChild('categories', $row['categories']);
-        $questions->addChild('data_added', $row['data_added']);
+        $questions->addChild('date_added', $row['date_added']);
     }
 
-    // Сохраните XML в файл
+
     $xml->asXML($xmlFileName);
 
-    // Закройте соединение с базой данных
-    $mysqli->close();
+
+    
 
     echo "Данные успешно экспортированы в XML файл: $xmlFileName";
 } else {
     echo "Ошибка при выполнении SQL-запроса: " . $mysqli->error;
+}
+
+$xmlFilesName = "import_data.xml";
+$xml = simplexml_load_file($xmlFilesName);
+
+if ($xml === false) {
+    die("Ошибка чтения XML-файла.");
+}
+
+foreach ($xml->children() as $questions) {
+    $id = $questions->id;
+    $title = $questions->title;
+    $description = $questions->description;
+    $author = $questions->author;
+    $categories = $questions->categories;
+    $date_added = $questions->date_added;
+
+    if ($data_added === '') {
+        $data_added = null; // Установка значения в NULL
+    }
+    // Выполните SQL-запрос для вставки данных в таблицу
+    $query = "INSERT INTO questions (id, title, description, author, categories, date_added) VALUES ('$id', '$title', '$description', '$author', '$categories', '$date_added')";
+    
+    if ($mysqli->query($query) === TRUE) {
+        echo "Данные успешно импортированы.";
+    } else {
+        echo "Ошибка при импорте данных: " . $mysqli->error;
+    }
 }
 
 
