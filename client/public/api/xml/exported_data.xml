@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Data><Question><id>2</id><title>some title</title><description>description</description><author>author</author><categories>{"categories": ["1", "2"]}</categories><date_added>2023-09-05 11:22:22</date_added></Question><Question><id>18</id><title>Second question</title><description>Second description</description><author>Nik</author><categories>{"categories": ["2", "6"]}</categories><date_added>2023-09-09 13:31:28</date_added></Question></Data>

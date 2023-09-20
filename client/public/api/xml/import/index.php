@@ -12,40 +12,11 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 
 
 // mysqli connector
-include_once '../connector.php';
+include_once '../../connector.php';
 
-$mysqli = mysqli_connect("localhost", "root", "", "savolho");
+$mysqli = $conn;
 
 $xmlFileName = "exported_data.xml";
-
-// Создайте новый объект SimpleXMLElement для создания XML
-$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><Data></Data>');
-
-// Выполните SQL-запрос для извлечения данных
-$query = "SELECT * FROM questions";
-$result = $mysqli->query($query);
-
-if ($result) {
-    while ($row = $result->fetch_assoc()) {
-        $questions = $xml->addChild('Question');
-        $questions->addChild('id', $row['id']);
-        $questions->addChild('title', $row['title']);
-        $questions->addChild('description', $row['description']);
-        $questions->addChild('author', $row['author']);
-        $questions->addChild('categories', $row['categories']);
-        $questions->addChild('date_added', $row['date_added']);
-    }
-
-
-    $xml->asXML($xmlFileName);
-
-
-    
-
-    echo "Данные успешно экспортированы в XML файл: $xmlFileName";
-} else {
-    echo "Ошибка при выполнении SQL-запроса: " . $mysqli->error;
-}
 
 $xmlFilesName = "import_data.xml";
 $xml = simplexml_load_file($xmlFilesName);
